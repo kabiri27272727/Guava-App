@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Guava</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2032%2032%22%20fill%3D%22none%22%3E%3Cpath%20d%3D%22M16%208.5C16%206%2017%204.5%2018.5%203.5%22%20stroke%3D%22%23bfe3cf%22%20stroke-width%3D%221.8%22%20stroke-linecap%3D%22round%22/%3E%3Cpath%20d%3D%22M17.5%207.5C20%203.5%2025%203.5%2027%205.5C25.5%209%2021.5%2010%2017.5%207.5z%22%20fill%3D%22%234cc38a%22/%3E%3Cellipse%20cx%3D%2215.5%22%20cy%3D%2219%22%20rx%3D%2212%22%20ry%3D%2211.5%22%20fill%3D%22%231f7a4d%22/%3E%3Cellipse%20cx%3D%2215.5%22%20cy%3D%2219%22%20rx%3D%229%22%20ry%3D%228.6%22%20fill%3D%22%23fff%22/%3E%3Cellipse%20cx%3D%2215.5%22%20cy%3D%2219%22%20rx%3D%225.6%22%20ry%3D%225.3%22%20fill%3D%22%23bfe3cf%22/%3E%3Ccircle%20cx%3D%2214%22%20cy%3D%2218%22%20r%3D%221%22%20fill%3D%22%2314532d%22/%3E%3Ccircle%20cx%3D%2217%22%20cy%3D%2217.5%22%20r%3D%221%22%20fill%3D%22%2314532d%22/%3E%3Ccircle%20cx%3D%2216.5%22%20cy%3D%2220.5%22%20r%3D%221%22%20fill%3D%22%2314532d%22/%3E%3Ccircle%20cx%3D%2213.5%22%20cy%3D%2220.8%22%20r%3D%221%22%20fill%3D%22%2314532d%22/%3E%3C/svg%3E">
+<style>
+:root{
+  --green:#1f7a4d; --green-d:#14532d; --green-l:#e8f5ee; --green-m:#bfe3cf;
+  --black:#0d0f0e; --ink:#1b1f1d; --muted:#6b756f; --line:#e3e8e5; --white:#fff; --bg:#f7faf8;
+  --radius:14px;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:Inter,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.45}
+button,input,select{font:inherit}
+header{background:var(--black);color:var(--white);position:sticky;top:0;z-index:20}
+.bar{max-width:980px;margin:0 auto;padding:14px 18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px;letter-spacing:-.02em}
+.logo svg{width:28px;height:28px}
+.logo span{color:var(--green-m)}
+nav{margin-left:auto;display:flex;gap:4px;background:#1a1f1c;padding:4px;border-radius:999px}
+nav button{background:none;border:0;color:#cfd8d3;padding:8px 16px;border-radius:999px;cursor:pointer;font-weight:600;font-size:14px}
+nav button.on{background:var(--green);color:var(--white)}
+nav button .dot{display:inline-block;min-width:18px;height:18px;line-height:18px;border-radius:9px;background:var(--white);color:var(--black);font-size:11px;margin-left:6px;text-align:center;padding:0 5px}
+main{max-width:980px;margin:0 auto;padding:22px 18px 80px}
+h2{margin:0 0 4px;font-size:22px;letter-spacing:-.02em}
+.sub{color:var(--muted);margin:0 0 18px;font-size:14px}
+.banner{background:var(--black);color:var(--white);border-radius:var(--radius);padding:14px 18px;margin-bottom:18px;display:flex;gap:12px;align-items:center;border-left:6px solid var(--green)}
+.banner b{color:var(--green-m)}
+.banner button{margin-left:auto}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+.stat{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px}
+.stat .n{font-size:30px;font-weight:800;letter-spacing:-.03em}
+.stat .l{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:600}
+.stat.soon .n{color:var(--green)}
+.stat.exp{background:var(--black);color:var(--white);border-color:var(--black)}
+.stat.exp .l{color:#9aa6a0}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+.btn{background:var(--green);color:var(--white);border:0;padding:10px 16px;border-radius:10px;font-weight:700;cursor:pointer;font-size:14px}
+.btn:hover{background:var(--green-d)}
+.btn.ghost{background:var(--white);color:var(--ink);border:1px solid var(--line)}
+.btn.ghost:hover{border-color:var(--green);color:var(--green-d)}
+.btn.dark{background:var(--black)}
+.btn.dark:hover{background:#2a302d}
+.btn.sm{padding:6px 11px;font-size:12.5px;border-radius:8px}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+input,select{border:1px solid var(--line);background:var(--white);padding:10px 12px;border-radius:10px;color:var(--ink);min-width:0}
+input:focus,select:focus{outline:2px solid var(--green-m);border-color:var(--green)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(285px,1fr));gap:14px}
+.card{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);padding:16px;position:relative;overflow:hidden}
+.card.soon{border-color:var(--green)}
+.card.expired{background:var(--black);color:var(--white);border-color:var(--black)}
+.card.expired .muted{color:#9aa6a0}
+.card h3{margin:0 0 6px;font-size:16px;line-height:1.25;padding-right:8px}
+.tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;background:var(--green-l);color:var(--green-d);padding:3px 9px;border-radius:999px}
+.expired .tag{background:#25302a;color:var(--green-m)}
+.muted{color:var(--muted);font-size:13px}
+.timer{font-size:26px;font-weight:800;letter-spacing:-.03em;margin:12px 0 2px;color:var(--green-d)}
+.soon .timer{color:var(--green)}
+.expired .timer{color:var(--white)}
+.prog{height:7px;background:var(--green-l);border-radius:99px;overflow:hidden;margin:8px 0 12px}
+.prog i{display:block;height:100%;background:var(--green);border-radius:99px}
+.expired .prog{background:#25302a}.expired .prog i{background:#fff}
+.actions{display:flex;gap:6px;flex-wrap:wrap}
+.expired .btn.ghost{background:#1a1f1c;color:#fff;border-color:#2c3430}
+.empty{text-align:center;padding:50px 20px;background:var(--white);border:1px dashed var(--green-m);border-radius:var(--radius);color:var(--muted)}
+.empty h3{color:var(--ink);margin:0 0 6px}
+.panel{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);padding:18px;margin-bottom:16px}
+.panel h3{margin:0 0 12px;font-size:16px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:720px){.two{grid-template-columns:1fr}.stats{gap:8px}.stat .n{font-size:24px}nav{margin-left:0;width:100%;justify-content:space-between}nav button{padding:8px 10px;flex:1}}
+video{width:100%;border-radius:12px;background:var(--black);aspect-ratio:4/3;object-fit:cover;display:block}
+.scanbox{position:relative}
+.scanbox .line{position:absolute;left:10%;right:10%;top:50%;height:2px;background:var(--green);box-shadow:0 0 12px var(--green);animation:sweep 2s ease-in-out infinite;display:none}
+.scanbox.live .line{display:block}
+@keyframes sweep{0%,100%{top:25%}50%{top:75%}}
+.field{display:flex;flex-direction:column;gap:4px;margin-bottom:10px}
+.field label{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cartitem{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
+.cartitem:last-child{border:0}
+.cartitem .f{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.cartitem input[type=text]{flex:1 1 150px}
+.cartitem input[type=number]{width:70px}
+.recipe{padding:0}
+.recipe .head{padding:16px 16px 12px}
+.recipe h3{margin:0 0 4px}
+.match{display:flex;align-items:center;gap:10px;margin:10px 0 4px}
+.match .prog{flex:1;margin:0}
+.match b{font-size:13px;min-width:44px;text-align:right}
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.chip{font-size:12px;padding:3px 9px;border-radius:999px;border:1px solid var(--green-m);background:var(--green-l);color:var(--green-d);font-weight:600}
+.chip.miss{background:var(--white);border:1px dashed #b9c2bd;color:var(--muted);font-weight:500}
+.chip.urgent{background:var(--black);color:var(--white);border-color:var(--black)}
+.recipe details{border-top:1px solid var(--line);padding:12px 16px}
+.recipe summary{cursor:pointer;font-weight:700;font-size:13px;color:var(--green-d)}
+.recipe ol{margin:10px 0 12px;padding-left:20px;font-size:14px}
+.recipe li{margin-bottom:4px}
+.switch{display:flex;gap:12px;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line)}
+.switch:last-child{border:0}
+.alert{display:flex;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
+.alert:last-child{border:0}
+.pill{font-size:12px;font-weight:800;padding:5px 11px;border-radius:999px;white-space:nowrap}
+.pill.soon{background:var(--green);color:#fff}
+.pill.exp{background:var(--black);color:#fff}
+#toasts{position:fixed;right:16px;bottom:16px;display:flex;flex-direction:column;gap:8px;z-index:50;max-width:340px}
+.toast{background:var(--black);color:#fff;padding:12px 16px;border-radius:12px;border-left:5px solid var(--green);box-shadow:0 8px 24px rgba(0,0,0,.25);font-size:14px;animation:in .25s ease}
+@keyframes in{from{transform:translateY(10px);opacity:0}}
+a.btn{text-decoration:none;display:inline-block}
+.vh{margin:24px 0 10px;font-size:16px}
+.hide{display:none!important}
+</style>
+</head>
+<body>
+<header>
+  <div class="bar">
+    <div class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><path d="M16 8.5C16 6 17 4.5 18.5 3.5" stroke="#bfe3cf" stroke-width="1.8" stroke-linecap="round"/><path d="M17.5 7.5C20 3.5 25 3.5 27 5.5C25.5 9 21.5 10 17.5 7.5z" fill="#4cc38a"/><ellipse cx="15.5" cy="19" rx="12" ry="11.5" fill="#1f7a4d"/><ellipse cx="15.5" cy="19" rx="9" ry="8.6" fill="#fff"/><ellipse cx="15.5" cy="19" rx="5.6" ry="5.3" fill="#bfe3cf"/><circle cx="14" cy="18" r="1" fill="#14532d"/><circle cx="17" cy="17.5" r="1" fill="#14532d"/><circle cx="16.5" cy="20.5" r="1" fill="#14532d"/><circle cx="13.5" cy="20.8" r="1" fill="#14532d"/></svg>
+      Guava
+    </div>
+    <nav id="nav">
+      <button data-tab="pantry" class="on">Pantry</button>
+      <button data-tab="scan">Add</button>
+      <button data-tab="recipes">Recipes</button>
+      <button data-tab="videos">Videos</button>
+      <button data-tab="alerts">Alerts<span class="dot hide" id="alertDot">0</span></button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div id="banner"></div>
+
+  <!-- PANTRY -->
+  <section id="tab-pantry">
+    <h2>Your pantry</h2>
+    <p class="sub">Everything in your home, with a live countdown to when it needs to be used.</p>
+    <div class="stats">
+      <div class="stat"><div class="n" id="sTotal">0</div><div class="l">Items</div></div>
+      <div class="stat soon"><div class="n" id="sSoon">0</div><div class="l">Use soon</div></div>
+      <div class="stat exp"><div class="n" id="sExp">0</div><div class="l">Expired</div></div>
+    </div>
+    <div class="row">
+      <input id="search" type="search" placeholder="Search items..." style="flex:1 1 180px">
+      <select id="sort">
+        <option value="exp">Expiring first</option>
+        <option value="name">Name A–Z</option>
+        <option value="added">Recently added</option>
+      </select>
+      <select id="catFilter"></select>
+      <button class="btn" onclick="go('scan')">+ Scan groceries</button>
+      <button class="btn dark" onclick="go('scan');setTimeout(()=>$('#mName').focus(),60)">+ Add manually</button>
+    </div>
+    <div id="pantryList"></div>
+    <div class="row" style="margin-top:18px">
+      <button class="btn ghost sm" id="demoBtn">Load sample groceries</button>
+      <button class="btn ghost sm" id="clearExpired">Clear expired items</button>
+    </div>
+  </section>
+
+  <!-- SCAN -->
+  <section id="tab-scan" class="hide">
+    <h2>Add groceries</h2>
+    <p class="sub">Scan barcodes as you unpack, or skip the scanner and add items by hand. Either way, every item gets an expiration timer.</p>
+    <div class="two">
+      <div>
+        <div class="panel">
+          <h3>Scan a barcode</h3>
+          <div class="scanbox" id="scanbox">
+            <video id="video" playsinline muted></video>
+            <div class="line"></div>
+          </div>
+          <div class="row" style="margin:12px 0 6px">
+            <button class="btn" id="camStart">Start camera</button>
+            <button class="btn ghost hide" id="camStop">Stop camera</button>
+          </div>
+          <p class="muted" id="camNote" style="margin:0 0 12px"></p>
+          <div class="field">
+            <label for="codeIn">Or type the barcode number</label>
+            <div class="row" style="margin:0;flex-wrap:nowrap">
+              <input id="codeIn" inputmode="numeric" placeholder="e.g. 5449000000996" style="flex:1">
+              <button class="btn dark" id="codeBtn">Look up</button>
+            </div>
+          </div>
+        </div>
+        <div class="panel">
+          <h3>Add manually (no barcode needed)</h3>
+          <div class="field"><label>Item name</label><input id="mName" placeholder="e.g. Spinach"></div>
+          <div class="frow">
+            <div class="field"><label>Category</label><select id="mCat"></select></div>
+            <div class="field"><label>Quantity</label><input id="mQty" type="number" min="1" value="1"></div>
+          </div>
+          <div class="field"><label>Best-by date</label><input id="mDate" type="date"></div>
+          <div class="row" style="margin:0"><button class="btn" id="mAddNow">Add to pantry</button><button class="btn ghost" id="mAdd">Add to checkout list</button></div>
+        </div>
+      </div>
+      <div>
+        <div class="panel">
+          <h3>Checkout list <span class="muted" id="cartCount"></span></h3>
+          <div id="cart"></div>
+          <div class="row" style="margin:14px 0 0">
+            <button class="btn" id="cartCommit">Add all to pantry</button>
+            <button class="btn ghost" id="cartClear">Clear</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RECIPES -->
+  <section id="tab-recipes" class="hide">
+    <h2>Recipes from your kitchen</h2>
+    <p class="sub">Ranked by how much you already have, with a boost for ingredients that are about to expire.</p>
+    <div class="row">
+      <select id="recFilter">
+        <option value="any">Anything I can partly make</option>
+        <option value="most">Mostly ready (70%+)</option>
+        <option value="full">Ready to cook (100%)</option>
+        <option value="all">Show every recipe</option>
+      </select>
+    </div>
+    <div id="recipeList" class="grid" style="grid-template-columns:repeat(auto-fill,minmax(310px,1fr))"></div>
+  </section>
+
+  <!-- VIDEOS -->
+  <section id="tab-videos" class="hide">
+    <h2>Cooking videos</h2>
+    <p class="sub">Jump straight to recipe videos and cooking communities. Links open in a new tab on each platform.</p>
+    <div class="panel">
+      <h3>Search a platform</h3>
+      <div class="row" style="margin:0 0 12px;flex-wrap:nowrap">
+        <input id="vidQ" placeholder="e.g. spinach omelette" style="flex:1">
+        <select id="vidPlat"></select>
+        <button class="btn" id="vidGo">Search</button>
+      </div>
+      <div class="chips" id="vidIdeas"></div>
+    </div>
+    <h3 class="vh">Picked for your kitchen</h3>
+    <div id="vidPicks" class="grid"></div>
+    <h3 class="vh">Use up what is expiring</h3>
+    <div id="vidExpiring"></div>
+    <h3 class="vh">Cooking platforms</h3>
+    <div id="vidPlats" class="grid"></div>
+  </section>
+
+  <!-- ALERTS -->
+  <section id="tab-alerts" class="hide">
+    <h2>Alerts</h2>
+    <p class="sub">Get nudged before food goes to waste.</p>
+    <div class="panel">
+      <h3>Notification settings</h3>
+      <div class="switch">
+        <div><b>Browser notifications</b><div class="muted" id="permNote"></div></div>
+        <button class="btn sm" id="notifyBtn">Enable</button>
+      </div>
+      <div class="switch">
+        <div><b>Warn me when food expires within</b><div class="muted">Also controls the "use soon" status in your pantry.</div></div>
+        <select id="daysSel">
+          <option value="1">1 day</option><option value="2">2 days</option><option value="3">3 days</option>
+          <option value="5">5 days</option><option value="7">7 days</option>
+        </select>
+      </div>
+      <div class="switch">
+        <div><b>Test it</b><div class="muted">Send a sample notification.</div></div>
+        <button class="btn ghost sm" id="testBtn">Send test</button>
+      </div>
+      <p class="muted" style="margin:12px 0 0">Browser notifications fire while Guava is open in a tab (checked every minute). Keep the tab pinned to stay covered.</p>
+    </div>
+    <div class="panel">
+      <h3>Needs attention</h3>
+      <div id="alertList"></div>
+    </div>
+  </section>
+</main>
+<div id="toasts"></div>
+
+<script>
+/* ---------- helpers ---------- */
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid = () => Math.random().toString(36).slice(2, 10);
+const DAY = 864e5;
+const pad = n => String(n).padStart(2, '0');
+const ymd = d => d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+const addDays = (n) => { const d = new Date(); d.setDate(d.getDate() + n); return ymd(d); };
+
+const SHELF = { Dairy:7, Meat:3, Seafood:2, Produce:6, Bakery:5, Pantry:365, Frozen:180, Beverages:30, Leftovers:4, Other:14 };
+const CATS = Object.keys(SHELF);
+const CAT_WORDS = {
+  Dairy:['milk','cheese','yogurt','yoghurt','butter','cream','egg','kefir'],
+  Meat:['chicken','beef','pork','turkey','bacon','sausage','ham','steak','mince','meat'],
+  Seafood:['salmon','fish','tuna','shrimp','prawn','cod','seafood'],
+  Produce:['apple','banana','berry','berries','lettuce','spinach','tomato','potato','onion','carrot','pepper','broccoli','cucumber','avocado','lemon','lime','orange','grape','mushroom','garlic','zucchini','celery','fruit','vegetable','salad','kale','corn','peas'],
+  Bakery:['bread','bagel','bun','tortilla','roll','croissant','muffin','bakery'],
+  Frozen:['frozen','ice cream'],
+  Beverages:['juice','soda','cola','water','beverage','drink','tea','coffee'],
+  Pantry:['pasta','rice','flour','sugar','oats','cereal','beans','sauce','oil','snack','canned','spaghetti','granola','peanut','soy','broth','chips','cracker','noodle']
+};
+function guessCategory(text){
+  const t = text.toLowerCase();
+  for (const c of ['Frozen','Seafood','Meat','Bakery','Dairy','Produce','Beverages','Pantry'])
+    if (CAT_WORDS[c].some(w => t.includes(w))) return c;
+  return 'Other';
+}
+
+/* ---------- state ---------- */
+let items = [], cart = [], settings = { days:3, notify:false }, notified = {};
+function load(){
+  try{
+    items = JSON.parse(localStorage.getItem('fk_items') || '[]');
+    settings = Object.assign(settings, JSON.parse(localStorage.getItem('fk_settings') || '{}'));
+    notified = JSON.parse(localStorage.getItem('fk_notified') || '{}');
+    cart = JSON.parse(localStorage.getItem('fk_cart') || '[]');
+  }catch(e){}
+}
+function save(){
+  try{
+    localStorage.setItem('fk_items', JSON.stringify(items));
+    localStorage.setItem('fk_settings', JSON.stringify(settings));
+    localStorage.setItem('fk_notified', JSON.stringify(notified));
+    localStorage.setItem('fk_cart', JSON.stringify(cart));
+  }catch(e){}
+}
+
+/* ---------- expiry math ---------- */
+const endOf = it => new Date(it.expires + 'T23:59:59');
+function info(it){
+  const ms = endOf(it) - Date.now();
+  const days = Math.floor(ms / DAY);
+  let status = 'fresh';
+  if (ms < 0) status = 'expired';
+  else if (ms <= (settings.days + 1) * DAY - 1 && daysLeftCalendar(it) <= settings.days) status = 'soon';
+  const total = Math.max(endOf(it) - new Date(it.added + 'T00:00:00'), DAY);
+  const frac = Math.max(0, Math.min(1, ms / total));
+  return { ms, days, status, frac };
+}
+function daysLeftCalendar(it){
+  const a = new Date(); a.setHours(0,0,0,0);
+  const b = new Date(it.expires + 'T00:00:00');
+  return Math.round((b - a) / DAY);
+}
+function timerText(it){
+  const { ms } = info(it);
+  if (ms < 0){
+    const d = Math.floor(-ms / DAY);
+    return d < 1 ? 'Expired today' : 'Expired ' + d + 'd ago';
+  }
+  const d = Math.floor(ms / DAY), h = Math.floor(ms % DAY / 36e5), m = Math.floor(ms % 36e5 / 6e4);
+  if (d >= 1) return d + 'd ' + h + 'h left';
+  return h + 'h ' + pad(m) + 'm left';
+}
+const nice = s => new Date(s + 'T12:00:00').toLocaleDateString(undefined, { month:'short', day:'numeric', year:'numeric' });
+
+/* ---------- navigation ---------- */
+function go(tab){
+  document.querySelectorAll('main > section').forEach(s => s.classList.add('hide'));
+  $('#tab-' + tab).classList.remove('hide');
+  document.querySelectorAll('#nav button').forEach(b => b.classList.toggle('on', b.dataset.tab === tab));
+  if (tab !== 'scan') stopCam();
+  renderAll();
+  window.scrollTo({ top:0 });
+}
+$('#nav').addEventListener('click', e => { const b = e.target.closest('button'); if (b) go(b.dataset.tab); });
+
+/* ---------- toasts ---------- */
+function toast(msg){
+  const t = document.createElement('div');
+  t.className = 'toast'; t.innerHTML = msg;
+  $('#toasts').appendChild(t);
+  setTimeout(() => t.remove(), 5000);
+}
+
+/* ---------- pantry ---------- */
+function fillSelects(){
+  const opts = CATS.map(c => `<option>${c}</option>`).join('');
+  if (!$('#mCat').children.length) $('#mCat').innerHTML = opts;
+  const cur = $('#catFilter').value;
+  $('#catFilter').innerHTML = '<option value="">All categories</option>' + opts;
+  $('#catFilter').value = cur;
+  $('#daysSel').value = String(settings.days);
+}
+function renderPantry(){
+  const q = $('#search').value.trim().toLowerCase(), cf = $('#catFilter').value, sort = $('#sort').value;
+  let list = items.filter(i => (!q || i.name.toLowerCase().includes(q)) && (!cf || i.category === cf));
+  list.sort((a, b) => sort === 'name' ? a.name.localeCompare(b.name)
+    : sort === 'added' ? b.added.localeCompare(a.added) || b.id.localeCompare(a.id)
+    : endOf(a) - endOf(b));
+  const stats = items.map(info);
+  $('#sTotal').textContent = items.length;
+  $('#sSoon').textContent = stats.filter(s => s.status === 'soon').length;
+  $('#sExp').textContent = stats.filter(s => s.status === 'expired').length;
+  if (!list.length){
+    $('#pantryList').innerHTML = items.length
+      ? '<div class="empty"><h3>No matches</h3>Try a different search or filter.</div>'
+      : '<div class="empty"><h3>Your pantry is empty</h3>Head to <b>Add</b> to add groceries, or load sample items to explore the app.</div>';
+    return;
+  }
+  $('#pantryList').innerHTML = '<div class="grid">' + list.map(it => {
+    const i = info(it);
+    return `<div class="card ${i.status}" data-id="${it.id}">
+      <div class="row" style="margin:0 0 8px;justify-content:space-between;flex-wrap:nowrap">
+        <span class="tag">${esc(it.category)}</span>
+        <span class="muted">Qty ${it.qty}</span>
+      </div>
+      <h3>${esc(it.name)}</h3>
+      <div class="timer" data-timer="${it.id}">${timerText(it)}</div>
+      <div class="muted">Best by ${nice(it.expires)}</div>
+      <div class="prog"><i data-bar="${it.id}" style="width:${Math.round(i.frac*100)}%"></i></div>
+      <div class="actions">
+        <button class="btn sm" data-act="use">Used one</button>
+        <button class="btn ghost sm" data-act="ext">+1 day</button>
+        <button class="btn ghost sm" data-act="edit">Edit date</button>
+        <button class="btn ghost sm" data-act="del">Remove</button>
+      </div>
+    </div>`;
+  }).join('') + '</div>';
+}
+$('#pantryList').addEventListener('click', e => {
+  const b = e.target.closest('button[data-act]'); if (!b) return;
+  const id = b.closest('.card').dataset.id, it = items.find(x => x.id === id); if (!it) return;
+  const act = b.dataset.act;
+  if (act === 'use'){ it.qty--; if (it.qty <= 0) items = items.filter(x => x.id !== id); }
+  if (act === 'del') items = items.filter(x => x.id !== id);
+  if (act === 'ext'){ const d = new Date(it.expires + 'T12:00:00'); d.setDate(d.getDate() + 1); it.expires = ymd(d); }
+  if (act === 'edit'){
+    const v = prompt('New best-by date (YYYY-MM-DD):', it.expires);
+    if (v && /^\d{4}-\d{2}-\d{2}$/.test(v) && !isNaN(new Date(v))) it.expires = v;
+    else if (v) toast('That date format didn\'t look right. Use YYYY-MM-DD.');
+  }
+  save(); renderAll();
+});
+['search','sort','catFilter'].forEach(id => $('#' + id).addEventListener('input', renderPantry));
+$('#clearExpired').onclick = () => {
+  const n = items.filter(i => info(i).status === 'expired').length;
+  if (!n) return toast('No expired items to clear.');
+  if (confirm('Remove ' + n + ' expired item(s)?')){ items = items.filter(i => info(i).status !== 'expired'); save(); renderAll(); }
+};
+$('#demoBtn').onclick = () => {
+  const mk = (name, cat, left, qty = 1) => ({ id:uid(), name, category:cat, qty, added:addDays(-2), expires:addDays(left), barcode:'' });
+  items.push(
+    mk('Whole milk','Dairy',1), mk('Large eggs','Dairy',12,12), mk('Cheddar cheese','Dairy',20),
+    mk('Greek yogurt','Dairy',3), mk('Chicken breast','Meat',1), mk('Spinach','Produce',2),
+    mk('Tomatoes','Produce',4,4), mk('Yellow onion','Produce',14,3), mk('Bananas','Produce',3,5),
+    mk('Sandwich bread','Bakery',4), mk('Flour tortillas','Bakery',9,8), mk('Long-grain rice','Pantry',300),
+    mk('Spaghetti','Pantry',400), mk('Black beans (canned)','Pantry',500,2), mk('Salmon fillet','Seafood',-1),
+    mk('Mushrooms','Produce',2), mk('Rolled oats','Pantry',250)
+  );
+  save(); renderAll(); toast('Sample groceries loaded.');
+};
+
+/* ---------- live timers (no full re-render) ---------- */
+function tick(){
+  items.forEach(it => {
+    const t = document.querySelector(`[data-timer="${it.id}"]`);
+    if (t) t.textContent = timerText(it);
+    const b = document.querySelector(`[data-bar="${it.id}"]`);
+    if (b) b.style.width = Math.round(info(it).frac * 100) + '%';
+  });
+}
+setInterval(tick, 20000);
+
+/* ---------- banner + alerts ---------- */
+function attention(){
+  return items.map(it => ({ it, i:info(it) })).filter(x => x.i.status !== 'fresh')
+    .sort((a, b) => a.i.ms - b.i.ms);
+}
+function renderBanner(){
+  const a = attention(), exp = a.filter(x => x.i.status === 'expired').length, soon = a.length - exp;
+  const dot = $('#alertDot');
+  dot.textContent = a.length; dot.classList.toggle('hide', !a.length);
+  if (!a.length){ $('#banner').innerHTML = ''; return; }
+  const parts = [];
+  if (soon) parts.push(`<b>${soon} item${soon > 1 ? 's' : ''}</b> expiring within ${settings.days} day${settings.days > 1 ? 's' : ''}`);
+  if (exp) parts.push(`<b>${exp} expired</b>`);
+  $('#banner').innerHTML = `<div class="banner"><div>${parts.join(' &middot; ')}. Check the Recipes tab for ideas to use them up.</div><button class="btn sm" onclick="go('recipes')">See recipes</button></div>`;
+}
+function renderAlerts(){
+  const a = attention();
+  $('#alertList').innerHTML = a.length ? a.map(({ it, i }) => `<div class="alert">
+      <span class="pill ${i.status === 'expired' ? 'exp' : 'soon'}">${i.status === 'expired' ? 'EXPIRED' : 'USE SOON'}</span>
+      <div style="flex:1"><b>${esc(it.name)}</b><div class="muted">${timerText(it)} &middot; best by ${nice(it.expires)}</div></div>
+    </div>`).join('') : '<div class="muted">Nothing needs attention. Your kitchen is in great shape.</div>';
+  const p = ('Notification' in window) ? Notification.permission : 'unsupported';
+  const on = p === 'granted' && settings.notify;
+  $('#permNote').textContent = p === 'unsupported' ? 'Your browser does not support notifications. In-app alerts still work.'
+    : p === 'denied' ? 'Blocked in your browser settings. Allow notifications for this page to enable.'
+    : on ? 'On. You will be notified as items approach expiry.' : 'Off.';
+  $('#notifyBtn').textContent = on ? 'Turn off' : 'Enable';
+  $('#notifyBtn').disabled = p === 'unsupported' || p === 'denied';
+}
+function notify(title, body){
+  if ('Notification' in window && Notification.permission === 'granted' && settings.notify){
+    try{ new Notification(title, { body }); }catch(e){}
+  }
+}
+function checkAlerts(silent){
+  const today = ymd(new Date());
+  attention().forEach(({ it, i }) => {
+    const key = it.id + ':' + i.status + ':' + today;
+    if (notified[key]) return;
+    notified[key] = 1;
+    const msg = i.status === 'expired' ? `${it.name} has expired.` : `${it.name}: ${timerText(it)}.`;
+    if (!silent) toast('<b>' + (i.status === 'expired' ? 'Expired' : 'Use soon') + '</b><br>' + esc(msg));
+    notify(i.status === 'expired' ? 'Food expired' : 'Use it soon', msg);
+  });
+  Object.keys(notified).forEach(k => { if (!k.endsWith(today)) delete notified[k]; });
+  save();
+}
+$('#notifyBtn').onclick = async () => {
+  if (settings.notify){ settings.notify = false; save(); return renderAlerts(); }
+  if (!('Notification' in window)) return;
+  const r = Notification.permission === 'granted' ? 'granted' : await Notification.requestPermission();
+  settings.notify = r === 'granted'; save(); renderAlerts();
+  if (settings.notify) toast('Notifications enabled.');
+};
+$('#testBtn').onclick = () => {
+  toast('<b>Test alert</b><br>Your notifications are working.');
+  notify('Guava test', 'Your notifications are working.');
+};
+$('#daysSel').onchange = e => { settings.days = +e.target.value; save(); renderAll(); };
+
+/* ---------- scanner / checkout cart ---------- */
+let stream = null, detector = null, scanTimer = null, lastCode = '', lastAt = 0;
+async function startCam(){
+  $('#camNote').textContent = '';
+  if (!('BarcodeDetector' in window)){
+    $('#camNote').textContent = 'Live scanning needs a browser with the Barcode Detector API (Chrome, Edge or Android Chrome). You can still type a barcode number below.';
+    return;
+  }
+  try{
+    stream = await navigator.mediaDevices.getUserMedia({ video:{ facingMode:'environment' } });
+    const v = $('#video'); v.srcObject = stream; await v.play();
+    detector = new BarcodeDetector({ formats:['ean_13','ean_8','upc_a','upc_e','code_128'] });
+    $('#scanbox').classList.add('live'); $('#camStart').classList.add('hide'); $('#camStop').classList.remove('hide');
+    $('#camNote').textContent = 'Point the camera at a barcode.';
+    scanTimer = setInterval(async () => {
+      try{
+        const codes = await detector.detect(v);
+        if (codes.length){
+          const c = codes[0].rawValue;
+          if (c !== lastCode || Date.now() - lastAt > 4000){ lastCode = c; lastAt = Date.now(); lookup(c); }
+        }
+      }catch(e){}
+    }, 300);
+  }catch(e){
+    $('#camNote').textContent = 'Could not open the camera (' + (e.name || 'error') + '). Check permissions, or type the barcode instead.';
+  }
+}
+function stopCam(){
+  clearInterval(scanTimer); scanTimer = null;
+  if (stream){ stream.getTracks().forEach(t => t.stop()); stream = null; }
+  const v = $('#video'); if (v) v.srcObject = null;
+  $('#scanbox').classList.remove('live'); $('#camStart').classList.remove('hide'); $('#camStop').classList.add('hide');
+}
+$('#camStart').onclick = startCam; $('#camStop').onclick = stopCam;
+
+async function lookup(code){
+  code = String(code).replace(/\D/g, '');
+  if (code.length < 6) return toast('That barcode looks too short.');
+  let name = '', cat = 'Other';
+  try{
+    const r = await fetch(`https://world.openfoodfacts.org/api/v2/product/${code}.json?fields=product_name,brands,categories_tags`);
+    const j = await r.json();
+    if (j.status === 1 && j.product){
+      name = (j.product.product_name || '').trim();
+      const brand = (j.product.brands || '').split(',')[0].trim();
+      if (name && brand && !name.toLowerCase().includes(brand.toLowerCase())) name = brand + ' ' + name;
+      cat = guessCategory(name + ' ' + (j.product.categories_tags || []).join(' ').replace(/en:|-/g, ' '));
+    }
+  }catch(e){}
+  if (!name){ name = 'Unknown item (' + code + ')'; toast('Barcode ' + code + ' was not found. Rename it in the list below.'); }
+  else toast('Scanned: <b>' + esc(name) + '</b>');
+  addToCart({ name, category:cat, barcode:code });
+}
+function addToCart({ name, category, barcode = '', qty = 1, expires = '' }){
+  const dup = cart.find(c => barcode && c.barcode === barcode);
+  if (dup){ dup.qty += qty; }
+  else cart.push({ id:uid(), name, category, barcode, qty, expires:expires || addDays(SHELF[category] || 14) });
+  save(); renderCart();
+}
+function renderCart(){
+  $('#cartCount').textContent = cart.length ? '(' + cart.length + ')' : '';
+  $('#cartCommit').disabled = $('#cartClear').disabled = !cart.length;
+  $('#cart').innerHTML = cart.length ? cart.map(c => `<div class="cartitem" data-id="${c.id}">
+      <div>
+        <input type="text" data-f="name" value="${esc(c.name)}">
+        <div class="f">
+          <select data-f="category">${CATS.map(x => `<option ${x === c.category ? 'selected' : ''}>${x}</option>`).join('')}</select>
+          <input type="number" min="1" data-f="qty" value="${c.qty}" title="Quantity">
+          <input type="date" data-f="expires" value="${c.expires}" title="Best-by date">
+        </div>
+      </div>
+      <button class="btn ghost sm" data-rm>Remove</button>
+    </div>`).join('') : '<div class="muted">Nothing scanned yet. Scan a barcode or add an item by hand.</div>';
+}
+$('#cart').addEventListener('change', e => {
+  const row = e.target.closest('.cartitem'); if (!row) return;
+  const c = cart.find(x => x.id === row.dataset.id), f = e.target.dataset.f; if (!c || !f) return;
+  c[f] = f === 'qty' ? Math.max(1, +e.target.value || 1) : e.target.value;
+  if (f === 'category') c.expires = addDays(SHELF[c.category] || 14);
+  save(); if (f === 'category') renderCart();
+});
+$('#cart').addEventListener('click', e => {
+  if (!e.target.matches('[data-rm]')) return;
+  cart = cart.filter(x => x.id !== e.target.closest('.cartitem').dataset.id); save(); renderCart();
+});
+$('#cartClear').onclick = () => { cart = []; save(); renderCart(); };
+$('#cartCommit').onclick = () => {
+  const today = ymd(new Date());
+  cart.forEach(c => items.push({ id:uid(), name:c.name.trim() || 'Item', category:c.category, qty:c.qty, added:today, expires:c.expires, barcode:c.barcode }));
+  const n = cart.length; cart = []; save(); renderAll(); checkAlerts(true);
+  toast(n + ' item' + (n > 1 ? 's' : '') + ' added to your pantry.'); go('pantry');
+};
+$('#codeBtn').onclick = () => { const v = $('#codeIn').value; if (v) { lookup(v); $('#codeIn').value = ''; } };
+$('#codeIn').addEventListener('keydown', e => { if (e.key === 'Enter') $('#codeBtn').click(); });
+let dateTouched = false;
+function syncMDate(){ if (!dateTouched) $('#mDate').value = addDays(SHELF[$('#mCat').value] || 14); }
+function readManual(){
+  const name = $('#mName').value.trim();
+  if (!name){ toast('Give the item a name first.'); $('#mName').focus(); return null; }
+  return { name, category:$('#mCat').value, qty:Math.max(1, +$('#mQty').value || 1), expires:$('#mDate').value || addDays(SHELF[$('#mCat').value] || 14) };
+}
+function resetManual(){ $('#mName').value = ''; $('#mQty').value = 1; dateTouched = false; syncMDate(); $('#mName').focus(); }
+$('#mAddNow').onclick = () => {
+  const m = readManual(); if (!m) return;
+  items.push({ id:uid(), name:m.name, category:m.category, qty:m.qty, added:ymd(new Date()), expires:m.expires, barcode:'' });
+  save(); renderAll(); checkAlerts(true); toast('<b>' + esc(m.name) + '</b> added to your pantry.'); resetManual();
+};
+$('#mAdd').onclick = () => {
+  const m = readManual(); if (!m) return;
+  addToCart(m); toast('<b>' + esc(m.name) + '</b> added to the checkout list.'); resetManual();
+};
+$('#mDate').addEventListener('input', () => { dateTouched = true; });
+$('#mCat').addEventListener('change', () => { dateTouched = false; syncMDate(); });
+$('#mName').addEventListener('input', e => { const g = guessCategory(e.target.value); if (g !== 'Other'){ $('#mCat').value = g; syncMDate(); } });
+$('#mName').addEventListener('keydown', e => { if (e.key === 'Enter') $('#mAddNow').click(); });
+
+/* ---------- recipes ---------- */
+const R = (name, time, ing, steps) => ({ name, time, ing, steps });
+const VEG = ['spinach','pepper','onion','tomato','mushroom','zucchini','broccoli','carrot','kale'];
+const RECIPES = [
+  R('Veggie Omelette','10 min',[['Eggs',['egg']],['Any vegetable',VEG],['Cheese',['cheese'],1]],['Whisk 3 eggs with a pinch of salt.','Saute chopped vegetables in a pan for 3 minutes.','Pour in the eggs and cook until nearly set.','Add cheese, fold and serve.']),
+  R('French Toast','15 min',[['Bread',['bread']],['Eggs',['egg']],['Milk',['milk']],['Bananas or berries',['banana','berr'],1]],['Whisk eggs, milk and a pinch of cinnamon.','Soak bread slices for 20 seconds per side.','Fry in a buttered pan until golden.','Top with fruit.']),
+  R('Fluffy Pancakes','20 min',[['Flour',['flour']],['Milk',['milk']],['Eggs',['egg']],['Bananas or berries',['banana','berr'],1]],['Mix 1 cup flour, 1 egg, 1 cup milk and 1 tsp baking powder.','Ladle onto a hot greased pan.','Flip when bubbles appear.','Serve with fruit.']),
+  R('Tomato Spaghetti','20 min',[['Pasta',['spaghetti','pasta','penne']],['Tomatoes or sauce',['tomato','marinara']],['Garlic',['garlic'],1],['Cheese',['cheese'],1]],['Boil pasta until al dente.','Simmer chopped tomatoes with garlic and olive oil for 10 minutes.','Toss with pasta.','Finish with cheese.']),
+  R('Creamy Chicken Pasta','30 min',[['Chicken',['chicken']],['Pasta',['spaghetti','pasta','penne']],['Milk or cream',['milk','cream']],['Spinach',['spinach'],1],['Cheese',['cheese'],1]],['Cook pasta.','Sear sliced chicken until golden and cooked through.','Add milk or cream, cheese and spinach and simmer.','Toss with pasta.']),
+  R('Chicken Stir-Fry','25 min',[['Chicken',['chicken']],['Rice',['rice']],['Any vegetable',VEG.concat(['peas','corn'])],['Soy sauce',['soy'],1]],['Start the rice.','Stir-fry sliced chicken on high heat.','Add vegetables and a splash of soy sauce.','Serve over rice.']),
+  R('Egg Fried Rice','15 min',[['Rice',['rice']],['Eggs',['egg']],['Any vegetable',['carrot','peas','onion','corn','pepper']],['Soy sauce',['soy'],1]],['Scramble eggs and set aside.','Fry vegetables, then add cold rice.','Stir in soy sauce and the eggs.','Serve hot.']),
+  R('Grilled Cheese & Tomato','15 min',[['Bread',['bread']],['Cheese',['cheese']],['Tomatoes',['tomato']]],['Butter the outside of the bread.','Layer cheese and sliced tomato inside.','Grill 3 minutes per side until golden.']),
+  R('Banana Oat Smoothie','5 min',[['Bananas',['banana']],['Milk or yogurt',['milk','yogurt','yoghurt']],['Oats',['oat'],1]],['Blend banana, a cup of milk or yogurt and a handful of oats.','Add ice if you like it cold.']),
+  R('Yogurt Berry Parfait','5 min',[['Yogurt',['yogurt','yoghurt']],['Berries or banana',['berr','banana']],['Oats or granola',['oat','granola'],1]],['Layer yogurt and fruit in a glass.','Top with oats or granola.']),
+  R('Avocado Toast','8 min',[['Bread',['bread']],['Avocado',['avocado']],['Egg',['egg'],1],['Tomato',['tomato'],1]],['Toast the bread.','Mash avocado with salt and lemon.','Spread, then top with a fried egg or tomato.']),
+  R('Bean Burritos','15 min',[['Tortillas',['tortilla']],['Beans',['bean']],['Rice',['rice'],1],['Cheese',['cheese'],1],['Tomato or salsa',['tomato','salsa'],1]],['Warm the beans with a pinch of cumin.','Fill tortillas with beans, rice, cheese and tomato.','Roll up and toast seam-side down.']),
+  R('Cheesy Quesadillas','10 min',[['Tortillas',['tortilla']],['Cheese',['cheese']],['Chicken or beans',['chicken','bean'],1],['Peppers or onion',['pepper','onion'],1]],['Fill half a tortilla with cheese and extras.','Fold and cook 2 minutes per side.','Slice and serve.']),
+  R('Hearty Veggie Soup','35 min',[['Carrots',['carrot']],['Onion',['onion']],['Potatoes',['potato']],['Broth',['broth','stock'],1]],['Saute chopped onion and carrot.','Add diced potato and 4 cups broth or water.','Simmer 20 minutes until tender.','Season and serve.']),
+  R('Loaded Baked Potatoes','60 min',[['Potatoes',['potato']],['Cheese',['cheese']],['Yogurt or sour cream',['yogurt','yoghurt','sour cream'],1],['Butter',['butter'],1]],['Prick potatoes and bake at 425°F for 50 minutes.','Split and fluff with a fork.','Top with cheese and yogurt.']),
+  R('Garden Salad','10 min',[['Greens',['lettuce','spinach','kale','salad']],['Tomatoes',['tomato']],['Cucumber',['cucumber'],1],['Cheese',['cheese'],1]],['Toss greens, tomatoes and cucumber.','Dress with olive oil, lemon and salt.','Top with cheese.']),
+  R('Baked Salmon & Veggies','25 min',[['Salmon or fish',['salmon','fish','cod']],['Any vegetable',['broccoli','zucchini','potato','pepper','carrot']],['Lemon',['lemon'],1]],['Heat the oven to 400°F.','Arrange fish and chopped vegetables on a tray with oil and salt.','Roast 15 to 18 minutes.','Finish with lemon.']),
+  R('Beef Tacos','20 min',[['Ground beef',['beef']],['Tortillas',['tortilla','taco']],['Cheese',['cheese'],1],['Lettuce',['lettuce'],1],['Tomato',['tomato'],1]],['Brown the beef with taco spices.','Warm the tortillas.','Fill and top with cheese, lettuce and tomato.']),
+  R('Mushroom Risotto','40 min',[['Rice',['rice']],['Mushrooms',['mushroom']],['Onion',['onion']],['Broth',['broth','stock'],1],['Cheese',['cheese'],1]],['Saute onion and mushrooms.','Stir in rice, then add warm broth a ladle at a time.','Cook about 25 minutes until creamy.','Finish with cheese.']),
+  R('Shakshuka','25 min',[['Eggs',['egg']],['Tomatoes',['tomato']],['Onion',['onion']],['Peppers',['pepper'],1]],['Saute onion and pepper.','Add chopped tomatoes and spices, simmer 10 minutes.','Make wells, crack in eggs and cover until set.']),
+  R('Peanut Butter Banana Toast','5 min',[['Bread',['bread']],['Peanut butter',['peanut']],['Bananas',['banana']]],['Toast the bread.','Spread peanut butter and top with banana slices.']),
+  R('Creamy Oatmeal','10 min',[['Oats',['oat']],['Milk',['milk']],['Fruit',['banana','apple','berr'],1]],['Simmer oats in milk for 5 minutes.','Top with sliced fruit.']),
+  R('Broccoli Cheese Rice Bake','35 min',[['Broccoli',['broccoli']],['Rice',['rice']],['Cheese',['cheese']]],['Mix cooked rice, steamed broccoli and most of the cheese.','Top with remaining cheese.','Bake at 375°F for 20 minutes.']),
+  R('Classic Burgers','25 min',[['Ground beef',['beef']],['Buns or bread',['bun','bread']],['Cheese',['cheese'],1],['Lettuce',['lettuce'],1],['Tomato',['tomato'],1],['Onion',['onion'],1]],['Shape beef into patties and season.','Pan-fry 4 minutes per side.','Melt cheese on top and build the burgers.'])
+];
+function recipeScore(r){
+  const urgent = new Set(attention().filter(x => x.i.status === 'soon').map(x => x.it.id));
+  let req = 0, have = 0, bonus = 0;
+  const haveL = [], missL = [], urgentL = [];
+  r.ing.forEach(([label, keys, opt]) => {
+    const hits = items.filter(it => keys.some(k => it.name.toLowerCase().includes(k)) && info(it).status !== 'expired');
+    const ok = hits.length > 0;
+    if (!opt){ req++; if (ok) have++; }
+    if (ok){ haveL.push(label); if (hits.some(h => urgent.has(h.id))){ bonus++; urgentL.push(label); } }
+    else if (!opt) missL.push(label);
+  });
+  return { pct: req ? have / req : 0, have, req, haveL, missL, urgentL, bonus, hits: haveL.length };
+}
+function renderRecipes(){
+  const mode = $('#recFilter').value;
+  let list = RECIPES.map(r => ({ r, s: recipeScore(r) }));
+  list = list.filter(x => mode === 'all' ? true : mode === 'full' ? x.s.pct === 1 : mode === 'most' ? x.s.pct >= .7 : x.s.hits > 0);
+  list.sort((a, b) => (b.s.pct + b.s.bonus * .08) - (a.s.pct + a.s.bonus * .08) || b.s.hits - a.s.hits);
+  if (!items.length){
+    $('#recipeList').innerHTML = '<div class="empty" style="grid-column:1/-1"><h3>Add groceries to get recipe ideas</h3>Scan a few items or load the sample groceries from the Pantry tab.</div>'; return;
+  }
+  if (!list.length){
+    $('#recipeList').innerHTML = '<div class="empty" style="grid-column:1/-1"><h3>No matches yet</h3>Try "Show every recipe" to see what to shop for.</div>'; return;
+  }
+  $('#recipeList').innerHTML = list.map(({ r, s }, idx) => `<div class="card recipe">
+    <div class="head">
+      <div class="row" style="margin:0 0 6px;justify-content:space-between;flex-wrap:nowrap"><span class="tag">${esc(r.time)}</span>${s.bonus ? '<span class="chip urgent">Uses expiring food</span>' : ''}</div>
+      <h3>${esc(r.name)}</h3>
+      <div class="match"><div class="prog"><i style="width:${Math.round(s.pct*100)}%"></i></div><b>${s.have}/${s.req}</b></div>
+      <div class="chips">
+        ${s.haveL.map(l => `<span class="chip ${s.urgentL.includes(l) ? 'urgent' : ''}">${esc(l)}</span>`).join('')}
+        ${s.missL.map(l => `<span class="chip miss">Need: ${esc(l)}</span>`).join('')}
+      </div>
+    </div>
+    <details><summary>How to make it</summary><ol>${r.steps.map(x => `<li>${esc(x)}</li>`).join('')}</ol>
+      <button class="btn sm" data-cook="${RECIPES.indexOf(r)}" ${s.hits ? '' : 'disabled'}>I cooked this</button></details>
+  </div>`).join('');
+}
+$('#recFilter').onchange = renderRecipes;
+$('#recipeList').addEventListener('click', e => {
+  const b = e.target.closest('[data-cook]'); if (!b) return;
+  const r = RECIPES[+b.dataset.cook];
+  if (!confirm('Use up one of each matching ingredient for "' + r.name + '"?')) return;
+  r.ing.forEach(([, keys]) => {
+    const hits = items.filter(it => keys.some(k => it.name.toLowerCase().includes(k)) && info(it).status !== 'expired')
+      .sort((a, b) => endOf(a) - endOf(b));
+    if (hits[0]){ hits[0].qty--; if (hits[0].qty <= 0) items = items.filter(x => x !== hits[0]); }
+  });
+  save(); renderAll(); toast('Enjoy your ' + esc(r.name) + '. Pantry updated.');
+});
+
+/* ---------- videos ---------- */
+const PLATS = [
+  { id:'youtube', name:'YouTube', desc:'Full-length tutorials, channels and playlists.', url:q => 'https://www.youtube.com/results?search_query=' + encodeURIComponent(q) },
+  { id:'tiktok', name:'TikTok', desc:'Quick, bite-size recipe clips.', url:q => 'https://www.tiktok.com/search?q=' + encodeURIComponent(q) },
+  { id:'instagram', name:'Instagram', desc:'Reels and creators, searched by hashtag.', url:q => 'https://www.instagram.com/explore/tags/' + encodeURIComponent(q.toLowerCase().replace(/[^a-z0-9]/g, '')) + '/' },
+  { id:'pinterest', name:'Pinterest', desc:'Photo pins and step-by-step boards.', url:q => 'https://www.pinterest.com/search/pins/?q=' + encodeURIComponent(q) },
+  { id:'reddit', name:'Reddit', desc:'Community recipes and cooking questions.', url:q => 'https://www.reddit.com/search/?q=' + encodeURIComponent(q) }
+];
+const IDEAS = ['easy weeknight dinners','5 minute breakfast','meal prep','zero waste cooking','budget meals','use up leftovers'];
+const plat = id => PLATS.find(p => p.id === id) || PLATS[0];
+const vlink = (p, q, label) => `<a class="btn ghost sm" href="${p.url(q)}" target="_blank" rel="noopener noreferrer">${label || p.name}</a>`;
+function renderVideos(){
+  if (!$('#vidPlat').children.length) $('#vidPlat').innerHTML = PLATS.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
+  $('#vidIdeas').innerHTML = IDEAS.map(x => `<button class="chip" style="cursor:pointer" data-idea="${esc(x)}">${esc(x)}</button>`).join('');
+  $('#vidPlats').innerHTML = PLATS.map(p => `<div class="card"><h3>${p.name}</h3><div class="muted" style="margin-bottom:12px">${p.desc}</div>
+    <div class="actions">${vlink(p, 'easy recipes', 'Easy recipes')}${vlink(p, '15 minute meals', '15-min meals')}${vlink(p, 'healthy recipes', 'Healthy')}</div></div>`).join('');
+  let scored = RECIPES.map(r => ({ r, s:recipeScore(r) })).sort((a, b) => (b.s.pct + b.s.bonus * .08) - (a.s.pct + a.s.bonus * .08));
+  let picks = scored.filter(x => x.s.hits > 0).slice(0, 6);
+  if (!picks.length) picks = scored.slice(0, 6);
+  $('#vidPicks').innerHTML = picks.map(({ r, s }) => `<div class="card">
+    <div class="row" style="margin:0 0 8px;justify-content:space-between;flex-wrap:nowrap"><span class="tag">${esc(r.time)}</span>${items.length ? `<span class="muted">${s.have}/${s.req} ingredients</span>` : ''}</div>
+    <h3>${esc(r.name)}</h3>
+    <div class="muted" style="margin-bottom:10px">Watch how it is made:</div>
+    <div class="actions">${PLATS.slice(0, 4).map(p => vlink(p, r.name + ' recipe')).join('')}</div></div>`).join('');
+  const soon = attention().filter(x => x.i.status === 'soon');
+  $('#vidExpiring').innerHTML = soon.length ? '<div class="panel">' + soon.slice(0, 8).map(({ it }) => `<div class="alert">
+      <div style="flex:1"><b>${esc(it.name)}</b><div class="muted">${timerText(it)}</div></div>
+      <div class="actions">${vlink(PLATS[0], 'recipes using ' + it.name)}${vlink(PLATS[1], 'recipes using ' + it.name)}</div></div>`).join('') + '</div>'
+    : '<div class="muted">Nothing is close to expiring, so there is nothing to rescue. Nice work.</div>';
+}
+function vidSearch(q){
+  q = (q || '').trim(); if (!q) return toast('Type something to search for.');
+  window.open(plat($('#vidPlat').value).url(q), '_blank', 'noopener');
+}
+$('#vidGo').onclick = () => vidSearch($('#vidQ').value);
+$('#vidQ').addEventListener('keydown', e => { if (e.key === 'Enter') vidSearch($('#vidQ').value); });
+$('#vidIdeas').addEventListener('click', e => { const b = e.target.closest('[data-idea]'); if (b) vidSearch(b.dataset.idea); });
+
+/* ---------- init ---------- */
+function renderAll(){
+  fillSelects(); renderBanner();
+  if (!$('#tab-pantry').classList.contains('hide')) renderPantry();
+  if (!$('#tab-scan').classList.contains('hide')) renderCart();
+  if (!$('#tab-recipes').classList.contains('hide')) renderRecipes();
+  if (!$('#tab-alerts').classList.contains('hide')) renderAlerts();
+  if (!$('#tab-videos').classList.contains('hide')) renderVideos();
+}
+load(); renderAll(); syncMDate();
+checkAlerts(false);
+setInterval(() => { checkAlerts(false); renderBanner(); }, 60000);
+</script>
+</body>
+</html>
